@@ -2,15 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/tablet_linear_layout"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     tools:context=".Activities.MainActivity">
-
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recipesList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="6dp"
+        android:orientation="horizontal"
         tools:listitem="@layout/mainrecipe_list"/>
+
+
+
+
+
 </LinearLayout>

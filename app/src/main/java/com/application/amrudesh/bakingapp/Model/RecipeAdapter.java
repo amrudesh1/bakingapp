@@ -1,21 +1,18 @@
 package com.application.amrudesh.bakingapp.Model;
 
 import android.content.Context;
-import android.text.Layout;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import com.application.amrudesh.bakingapp.Activities.IngredientsActivity;
 import com.application.amrudesh.bakingapp.Data.Recipe;
 import com.application.amrudesh.bakingapp.R;
 import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
-
 import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -75,10 +72,21 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         @BindView(R.id.recipe_image)
         ImageView recipeImage;
 
-        public ViewHolder(Context ctx,View itemView) {
+        public ViewHolder(final Context ctx, View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             context = ctx;
+
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Recipe recipe = recipeList.get(getAdapterPosition());
+                    Intent intent = new Intent(ctx, IngredientsActivity.class);
+                    intent.putExtra("recipe",recipe);
+                    ctx.startActivity(intent);
+                }
+            });
         }
     }
 }

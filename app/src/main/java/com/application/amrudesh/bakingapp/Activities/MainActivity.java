@@ -14,14 +14,11 @@ import com.application.amrudesh.bakingapp.Data.Recipe;
 import com.application.amrudesh.bakingapp.Model.RecipeAdapter;
 import com.application.amrudesh.bakingapp.R;
 import com.application.amrudesh.bakingapp.Util.Constants;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
     private List<Recipe> nameList;
     private JSONObject list;
     private Boolean tablet;
-    private int array_length;
     @BindView(R.id.recipesList) RecyclerView recyclerView;
     private RecipeAdapter recipeAdapter;
 
@@ -47,15 +43,10 @@ public class MainActivity extends AppCompatActivity {
         screenSize();
         nameList = new ArrayList<>();
         getRecipieData();
-        recipeAdapter = new RecipeAdapter(this,nameList);
+        recipeAdapter = new RecipeAdapter(this, nameList);
         recyclerView.setAdapter(recipeAdapter);
 
-
-
-
-
     }
-
     private void screenSize() {
         if (findViewById(R.id.tablet_linear_layout)!= null)
         {
@@ -65,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            tablet = false;
         }
     }
 
@@ -75,15 +67,15 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(JSONArray array) {
-                     array_length = array.length();
                         for (int i =0; i<array.length();i++)
                         {
                             try {
                                 list = array.getJSONObject(i);
                                 Recipe recipe = new Recipe();
                                 recipe.setName(list.getString("name"));
-                                recipe.setId(String.valueOf(i));
+                                recipe.setId(i);
                                 recipe.setImage(list.getString("image"));
+                                recipe.setTab(tablet);
                                 nameList.add(recipe);
 
 
@@ -94,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                             recipeAdapter.notifyDataSetChanged();
                         }
+
 
                     }
                 }, new Response.ErrorListener() {

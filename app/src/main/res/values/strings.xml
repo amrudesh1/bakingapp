@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Baking App</string>
+    <string name="ingredient_name">Ingredient Name:</string>
+    <string name="measurement">Measurement :</string>
+    <string name="quantity">Quantity :</string>
+    <string name="garam_masala">Garam Masala</string>
+    <string name="recipe_step">Recipe Step</string>
 </resources>

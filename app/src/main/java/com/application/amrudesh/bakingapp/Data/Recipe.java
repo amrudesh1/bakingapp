@@ -4,19 +4,20 @@ import java.io.Serializable;
 
 public class Recipe implements Serializable {
 
-    private String id;
+    private int id;
     private String name;
     private String image;
+    private Boolean tab;
 
     public Recipe()
     {
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -35,5 +36,13 @@ public class Recipe implements Serializable {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Boolean getTab() {
+        return tab;
+    }
+
+    public void setTab(Boolean tab) {
+        this.tab = tab;
     }
 }

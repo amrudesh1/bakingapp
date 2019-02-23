@@ -31,8 +31,8 @@ public class StepsFragment extends Fragment {
     @BindView(R.id.ingredientList)
     RecyclerView r2;
 
-    ArrayList<? extends Ingredients> ingredientsList;
-    ArrayList<? extends Steps> stepsList;
+    private List<Ingredients> ingredientsList;
+    private List<Steps> stepsList;
 
     @Nullable
     @Override
@@ -40,8 +40,6 @@ public class StepsFragment extends Fragment {
         View view = inflater.inflate(R.layout.step_fragment, container, false);
         ingredientsList = new ArrayList<>();
         stepsList = new ArrayList<>();
-
-
         ButterKnife.bind(this,view);
         if (savedInstanceState == null)
         {
@@ -57,9 +55,9 @@ public class StepsFragment extends Fragment {
             stepsList = savedInstanceState.getParcelableArrayList("steps");
 
         }
-        Log.i("TAG_FRAG",String.valueOf(ingredientsList.size()));
+        Log.i("TAG_FRAG",String.valueOf(stepsList.size()));
         r1.setLayoutManager(new LinearLayoutManager(getActivity()));
-        r1.setAdapter(new IngredientsAdapter(getActivity(), (List<Ingredients>) ingredientsList));
+        r1.setAdapter(new IngredientsAdapter(getActivity(), ingredientsList));
         r1.getAdapter().notifyDataSetChanged();
 
         return view;

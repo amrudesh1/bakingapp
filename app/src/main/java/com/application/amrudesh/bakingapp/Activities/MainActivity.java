@@ -72,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
                             try {
                                 list = array.getJSONObject(i);
                                 Recipe recipe = new Recipe();
-                                recipe.setName(list.getString("name"));
                                 recipe.setId(i);
+                                recipe.setName(list.getString("name"));
                                 recipe.setImage(list.getString("image"));
                                 recipe.setTab(tablet);
                                 nameList.add(recipe);

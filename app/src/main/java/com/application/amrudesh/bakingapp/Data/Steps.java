@@ -1,41 +1,40 @@
 package com.application.amrudesh.bakingapp.Data;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Steps implements Serializable {
-    private String id;
-    private String short_description;
+public class Steps implements Parcelable {
+
+
+    private String shortdescription;
     private String description;
     private String videoURL;
     private String thumbnailURL;
 
-    public Steps(String id, String short_description, String description, String videoURL, String thumbnailURL) {
-        this.id = id;
-        this.short_description = short_description;
+    public Steps() {
+
+    }
+
+    public Steps(String shortdescription, String description, String videoURL, String thumbnailURL) {
+        this.shortdescription = shortdescription;
         this.description = description;
         this.videoURL = videoURL;
         this.thumbnailURL = thumbnailURL;
     }
 
-    public Steps()
-    {
-
+    public Steps(Parcel in) {
+        this.shortdescription = in.readString();
+        this.description = in.readString();
+        this.videoURL = in.readString();
+        this.thumbnailURL = in.readString();
     }
 
-    public String getId() {
-        return id;
+    public String getShortdescription() {
+        return shortdescription;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getShort_description() {
-        return short_description;
-    }
-
-    public void setShort_description(String short_description) {
-        this.short_description = short_description;
+    public void setShortdescription(String shortdescription) {
+        this.shortdescription = shortdescription;
     }
 
     public String getDescription() {
@@ -61,4 +60,27 @@ public class Steps implements Serializable {
     public void setThumbnailURL(String thumbnailURL) {
         this.thumbnailURL = thumbnailURL;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(shortdescription);
+        dest.writeString(description);
+        dest.writeString(videoURL);
+        dest.writeString(thumbnailURL);
+    }
+
+    public final Parcelable.Creator CREATOR = new Creator<Steps>() {
+        public Steps createFromParcel(Parcel in) {
+            return new Steps(in);
+        }
+
+        public Steps[] newArray(int size) {
+            return new Steps[size];
+        }
+    };
 }

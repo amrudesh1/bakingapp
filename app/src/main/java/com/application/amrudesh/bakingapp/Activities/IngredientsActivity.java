@@ -55,6 +55,7 @@ public class IngredientsActivity extends AppCompatActivity implements FragmentLi
         setContentView(R.layout.activity_recipe);
         recipe =(Recipe) getIntent().getParcelableExtra("recipe");
         currentPosition = recipe.getId();
+        frameLayout = (FrameLayout) findViewById(R.id.fragmentTwo);
         tablet = true;
         Bundle bundle = new Bundle();
         bundle.putInt("index",currentPosition);
@@ -95,7 +96,8 @@ public class IngredientsActivity extends AppCompatActivity implements FragmentLi
         {
             detailsFragment = new DetailsFragment();
             Bundle bundle = new Bundle();
-            bundle.putInt("current", currentPosition);
+            bundle.putInt("index", index);
+            bundle.putInt("current",currentPosition);
             bundle.putBoolean("tablet", true);
             detailsFragment.setArguments(bundle);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragmentTwo, detailsFragment).commit();

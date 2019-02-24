@@ -6,6 +6,98 @@
     android:layout_height="match_parent"
     android:fillViewport="true">
 
+    <LinearLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <FrameLayout
+            android:id="@+id/f1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <TextView
+                android:id="@+id/empty"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/there_is_no_image_or_video_for_the_item"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:padding="16dp"
+                android:visibility="gone" />
+
+            <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+                android:id="@+id/playerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/image"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/back"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/f2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            >
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="15dp"
+                android:freezesText="true"
+                android:gravity="center_horizontal"
+                android:padding="16dp"
+                android:text="Description goes here"
+                android:textSize="17sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/next_button"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignBaseline="@id/back_button"
+                    android:layout_margin="18dp"
+                    android:src="@drawable/front"
+                    app:fabSize="auto" />
+
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/back_button"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="18dp"
+                    android:background="@android:color/white"
+                    android:src="@drawable/back"
+                    app:fabSize="auto" />
+
+                <TextView
+                    android:id="@+id/currentStep"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="Steps number"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+
+        </FrameLayout>
+
+
+    </LinearLayout>
 
 
 </ScrollView>

@@ -93,6 +93,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
         view = inflater.inflate(R.layout.details_fragment, container, false);
         ButterKnife.bind(this, view);
         stepsList = new ArrayList<>();
+
         queue = Volley.newRequestQueue(getActivity());
         Bundle bundle;
         bundle = getArguments();
@@ -101,6 +102,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
             index = bundle.getInt("index");
             arrayPosition = bundle.getInt("current");
             tablet = bundle.getBoolean("tablet");
+
             Log.i("TAG_ARRAY_VALUE", String.valueOf(arrayPosition));
             Log.i("TAG_POS_DETAIL", String.valueOf(index));
             Log.i("TAG_POS_TAB", String.valueOf(tablet));
@@ -110,9 +112,12 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
             tablet = savedInstanceState.getBoolean("tablet");
 
         }
+
         stepsList = getSteps(arrayPosition, index);
         f1.setOnClickListener(this);
         f2.setOnClickListener(this);
+
+
 
         return view;
 
@@ -122,12 +127,15 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
         if (index <= 0) {
             f2.hide();
         } else {
-            f2.show();
-        }
+            f2.show(); }
+        if (index >=stepsList.size()-1) {
+            f1.hide(); } else {
+            f1.show(); }
 
     }
 
     private void ListTheSteps(List<Steps> stepsList, int list_pos) {
+
         Log.i("Steps_Function", stepsList.get(list_pos).getShortdescription());
         if (stepsList.get(list_pos).getVideoURL().isEmpty() && stepsList.get(list_pos).getThumbnailURL().isEmpty())
         {
@@ -168,6 +176,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
     }
 
     private List<Steps> getSteps(final int index, final int click_loc) {
+        stepsList.clear();
         JsonArrayRequest stepsRequest = new JsonArrayRequest
                 (Request.Method.GET, Constants.BASE_URL, null, new Response.Listener<JSONArray>() {
                     @Override

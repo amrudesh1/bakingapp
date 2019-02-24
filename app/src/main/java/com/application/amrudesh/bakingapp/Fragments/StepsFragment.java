@@ -141,8 +141,6 @@ public class StepsFragment extends Fragment {
                                 stepsList.add(steps);
 
 
-                                Log.i("Steps",steps.getDescription());
-                                Log.i("Steps",steps.getShortdescription());
 
 
 

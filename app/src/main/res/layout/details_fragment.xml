@@ -67,8 +67,8 @@
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/next_button"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignBaseline="@id/back_button"
                     android:layout_margin="18dp"
@@ -78,15 +78,15 @@
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/back_button"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_margin="18dp"
                     android:background="@android:color/white"
                     android:src="@drawable/back"
                     app:fabSize="auto" />
 
                 <TextView
-                    android:id="@+id/currentStep"
+                    android:id="@+id/current"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"

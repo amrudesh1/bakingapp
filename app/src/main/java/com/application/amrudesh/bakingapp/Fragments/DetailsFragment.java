@@ -110,7 +110,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
             tablet = savedInstanceState.getBoolean("tablet");
 
         }
-        stepsList = getSteps(arrayPosition, index);
+        getSteps(arrayPosition, index);
         f1.setOnClickListener(this);
         f2.setOnClickListener(this);
 

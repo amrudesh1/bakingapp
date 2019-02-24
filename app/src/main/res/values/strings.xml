@@ -5,4 +5,5 @@
     <string name="quantity">Quantity :</string>
     <string name="garam_masala">Garam Masala</string>
     <string name="recipe_step">Recipe Step</string>
+    <string name="there_is_no_image_or_video_for_the_item">There is no Image or Video for the item</string>
 </resources>

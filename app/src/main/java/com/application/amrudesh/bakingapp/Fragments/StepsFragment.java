@@ -1,5 +1,7 @@
 package com.application.amrudesh.bakingapp.Fragments;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +21,7 @@ import com.application.amrudesh.bakingapp.Model.IngredientsAdapter;
 import com.application.amrudesh.bakingapp.Model.StepsAdapter;
 import com.application.amrudesh.bakingapp.R;
 import com.application.amrudesh.bakingapp.Util.Constants;
+import com.application.amrudesh.bakingapp.Util.FragmentListerner;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,6 +42,7 @@ import butterknife.ButterKnife;
 public class StepsFragment extends Fragment {
     RequestQueue queue;
     Boolean tablet;
+    FragmentListerner fragmentListerner;
     private JSONObject list,IngredientsJsonList,StepsJsonList;
     private JSONArray ingredientsArray,StepsArray;
 
@@ -51,6 +55,15 @@ public class StepsFragment extends Fragment {
 
     private List<Ingredients> ingredientsList;
     private List<Steps> stepsList;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        Activity activity = (Activity) context;
+        fragmentListerner = (FragmentListerner) activity;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -72,12 +85,14 @@ public class StepsFragment extends Fragment {
         else
         {
             ingredientsList = getIngredients(index);
+            stepsList = getSteps(index);
             tablet = savedInstanceState.getBoolean("tablet",false);
         }
 
         return view;
 
     }
+
 
     private void initialiseRec(List<Ingredients> ingredientsList) {
 
@@ -91,7 +106,7 @@ public class StepsFragment extends Fragment {
     }
     private void initialiseRec2(List<Steps> stepsList) {
         r2.setLayoutManager(new LinearLayoutManager(getActivity()));
-        StepsAdapter stepsAdapter = new StepsAdapter(getActivity(),stepsList);
+        StepsAdapter stepsAdapter = new StepsAdapter(getActivity(),stepsList,fragmentListerner);
         r2.setAdapter(stepsAdapter);
         r2.getAdapter().notifyDataSetChanged();
     }

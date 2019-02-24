@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
         recipeAdapter = new RecipeAdapter(this, nameList);
         recyclerView.setAdapter(recipeAdapter);
 
+        Log.i("TAG",String.valueOf(nameList.size()));
+
     }
     private void screenSize() {
         if (findViewById(R.id.tablet_linear_layout)!= null)

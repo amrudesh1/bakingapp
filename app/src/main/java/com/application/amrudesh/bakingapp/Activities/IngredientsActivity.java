@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -24,6 +25,7 @@ import com.application.amrudesh.bakingapp.Fragments.DetailsFragment;
 import com.application.amrudesh.bakingapp.Fragments.StepsFragment;
 import com.application.amrudesh.bakingapp.R;
 import com.application.amrudesh.bakingapp.Util.Constants;
+import com.application.amrudesh.bakingapp.Util.FragmentListerner;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,43 +34,30 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IngredientsActivity extends AppCompatActivity {
+public class IngredientsActivity extends AppCompatActivity implements FragmentListerner {
 
     private Recipe recipe;
     private int currentPosition;
     private Boolean tablet;
-    private List<Ingredients> ingredientsList;
-    private List<Steps> stepsList;
-    private RequestQueue requestQueue;
-    private JSONObject list,IngredientsJsonList,StepsJsonList;
-    private JSONArray ingredientsArray,StepsArray;
+
+
 
     @BindView(R.id.fragmentTwo)
     FrameLayout frameLayout;
     DetailsFragment detailsFragment;
     StepsFragment stepsFragment;
 
-    @Override
-    protected void onStart() {
-        super.onStart();
 
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
-        requestQueue = Volley.newRequestQueue(this);
         recipe =(Recipe) getIntent().getParcelableExtra("recipe");
         currentPosition = recipe.getId();
         tablet = true;
-        ingredientsList = new ArrayList<>();
-        stepsList = new ArrayList<>();
-        getIngredients(currentPosition);
-        getSteps(currentPosition);
         Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("ingredients", (ArrayList<? extends Parcelable>) ingredientsList);
-        bundle.putParcelableArrayList("steps", (ArrayList<? extends Parcelable>) stepsList);
+        bundle.putInt("index",currentPosition);
         bundle.putBoolean("tablet",tablet);
         if (savedInstanceState == null) {
 
@@ -81,110 +70,47 @@ public class IngredientsActivity extends AppCompatActivity {
             }
         } else {
             stepsFragment =(StepsFragment) getSupportFragmentManager().getFragment(savedInstanceState,"Step");
+            if (!stepsFragment.isAdded())
+                getSupportFragmentManager().beginTransaction().add(R.id.fragmentOne, stepsFragment).commit();
 
+            if(detailsFragment !=null)
+            {
+                detailsFragment= (DetailsFragment) getSupportFragmentManager().getFragment(savedInstanceState,"detail");
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentTwo, detailsFragment).commit();
+            }
         }
 
+
     }
 
 
-
-
-
-
-
-
-
-    private List<Ingredients> getIngredients(final int index) {
-
-        JsonArrayRequest arrayRequest = new JsonArrayRequest
-                (Request.Method.GET, Constants.BASE_URL, null, new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        for (int i =index;i<=index;i++)
-                        {
-                            try {
-                                list = response.getJSONObject(i);
-                                ingredientsArray = new JSONArray(list.getString("ingredients"));
-
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        for (int j = 0; j <ingredientsArray.length();j++)
-                        {
-                            try {
-                                IngredientsJsonList = ingredientsArray.getJSONObject(j);
-                                Ingredients ingredients = new Ingredients();
-                                ingredients.setQuantity(IngredientsJsonList.getString("quantity"));
-                                ingredients.setMeasure(IngredientsJsonList.getString("measure"));
-                                ingredients.setIngredient(IngredientsJsonList.getString("ingredient"));
-                                ingredientsList.add(ingredients);
-
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-                        Log.i("TAG",String.valueOf(ingredientsList.size()));
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-
-        requestQueue.add(arrayRequest);
-        return ingredientsList;
+    @Override
+    public void setStep(int index) {
+        if (!tablet) {
+            Intent intent = new Intent(this, StepActivity.class);
+            intent.putExtra("current", currentPosition);
+            startActivity(intent);
+        }
+        else
+        {
+            detailsFragment = new DetailsFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("current", currentPosition);
+            bundle.putBoolean("tablet", true);
+            detailsFragment.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentTwo, detailsFragment).commit();
+        }
     }
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        getSupportFragmentManager().putFragment(outState, "main", stepsFragment);
 
+        if (tablet && detailsFragment!=null)
+        {
+            try{
+                getSupportFragmentManager().putFragment(outState, "detail", detailsFragment);
+            }catch (NullPointerException e) {}
 
-    private List<Steps> getSteps(final int index)
-    {
-        JsonArrayRequest stepsRequest = new JsonArrayRequest
-                (Request.Method.GET, Constants.BASE_URL, null, new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        for (int i =index;i<=index;i++)
-                        {
-                            try {
-                                list = response.getJSONObject(i);
-                                StepsArray = new JSONArray(list.getString("steps"));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        for (int j =0;j <StepsArray.length();j++)
-                        {
-                            try {
-                                StepsJsonList = StepsArray.getJSONObject(j);
-                                Steps steps = new Steps();
-                                steps.setDescription(StepsJsonList.getString("description"));
-                                steps.setShortdescription(StepsJsonList.getString("shortDescription"));
-                                steps.setVideoURL(StepsJsonList.getString("videoURL"));
-                                steps.setThumbnailURL(StepsJsonList.getString("thumbnailURL"));
-                                stepsList.add(steps);
-
-                                Log.i("Steps",steps.getDescription());
-                                Log.i("Steps",steps.getShortdescription());
-
-
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-        requestQueue.add(stepsRequest);
-        return stepsList;
-    }
-
+        }
 }
+    }

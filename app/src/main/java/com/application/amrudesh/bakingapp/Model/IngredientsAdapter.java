@@ -21,11 +21,6 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
     Context ctx;
     List <Ingredients> ingredientsList;
 
-
-
-
-
-
     public IngredientsAdapter(Context ctx, List<Ingredients> ingredientsList) {
         this.ctx = ctx;
         this.ingredientsList = ingredientsList;
@@ -55,11 +50,11 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.in_name)
+        @BindView(R.id.ingredient_name)
         TextView ingredient_name;
-        @BindView(R.id.qty_name)
+        @BindView(R.id.quantity_txt)
         TextView quantity;
-        @BindView(R.id.measure_name)
+        @BindView(R.id.spoon)
         TextView measurement;
 
         public ViewHolder(Context context,View itemView) {

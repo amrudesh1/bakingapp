@@ -15,7 +15,7 @@
         app:contentPadding="16dp"
         app:cardElevation="2dp">
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         
@@ -49,6 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/in_name"
+        android:textAllCaps="true"
         android:layout_marginRight="10dp"
         android:paddingStart="5dp"
         android:textStyle="bold"
@@ -68,6 +69,7 @@
 
         <TextView
             android:layout_width="wrap_content"
+            android:id="@+id/spoon"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/measure_name"
             android:layout_alignBaseline="@id/measure_name"

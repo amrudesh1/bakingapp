@@ -22,9 +22,12 @@
                 android:resource="@xml/baking_widget_info" />
         </receiver>
 
-        <activity android:name=".Activities.StepActivity" />
-        <activity android:name=".Activities.IngredientsActivity" />
-        <activity android:name=".Activities.MainActivity">
+        <activity android:name=".Activities.StepActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name=".Activities.IngredientsActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"/>
+        <activity android:name=".Activities.MainActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

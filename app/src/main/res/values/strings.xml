@@ -6,4 +6,11 @@
     <string name="garam_masala">Garam Masala</string>
     <string name="recipe_step">Recipe Step</string>
     <string name="there_is_no_image_or_video_for_the_item">There is no Image or Video for the item</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="recipe_name">Recipe Name</string>
+    <string name="select_the_recipe_from_the_list">Select the recipe from the List</string>
+    <string name="add_recipe">Add Recipe</string>
+    <string name="title">Title</string>
+    <string name="measurement_widget">Measurement</string>
 </resources>

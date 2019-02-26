@@ -23,15 +23,14 @@
         </receiver>
 
         <activity android:name=".Activities.StepActivity"
-            android:launchMode="singleTask"
-            android:parentActivityName=".Activities.IngredientsActivity" />
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity android:name=".Activities.IngredientsActivity"
-            android:launchMode="singleTask"
-            android:parentActivityName=".Activities.MainActivity"/>
+            android:configChanges="orientation|screenSize|keyboardHidden"/>
         <activity android:name=".Activities.MainActivity"
-            android:launchMode="singleTask">>
+            android:configChanges="orientation|screenSize|keyboardHidden">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

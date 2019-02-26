@@ -118,6 +118,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
         f2.setOnClickListener(this);
 
 
+
         return view;
 
     }
@@ -168,6 +169,10 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
     hideSystemInterface();
         description.setText(stepsList.get(list_pos).getDescription());
         current.setText((list_pos+1)+"/"+stepsList.size());
+
+
+
+
     }
 
     private List<Steps> getSteps(final int index, final int click_loc) {
@@ -256,22 +261,11 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onConfigurationChanged(final Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+
         if (tablet)
             return;
-
         hideSystemInterface();
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) playerView.getLayoutParams();
-            params.width=params.MATCH_PARENT;
-            params.height=params.MATCH_PARENT;
-            playerView.setLayoutParams(params);
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) playerView.getLayoutParams();
-            params.width=params.MATCH_PARENT;
-            params.height=600;
-            playerView.setLayoutParams(params);
 
-        }
 
     }
 

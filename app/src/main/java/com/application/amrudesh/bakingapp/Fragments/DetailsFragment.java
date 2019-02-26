@@ -1,15 +1,18 @@
 package com.application.amrudesh.bakingapp.Fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.media.Image;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -81,6 +84,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
     TextView empty;
     @BindView(R.id.current)
     TextView current;
+    int fs;
 
     int width = 0;
     int height = 0;
@@ -114,6 +118,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
         }
 
         stepsList = getSteps(arrayPosition, index);
+
         f1.setOnClickListener(this);
         f2.setOnClickListener(this);
 
@@ -165,7 +170,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
                     .placeholder(R.drawable.no_image_found)
                     .into(imageView);
         }
-    hideSystemInterface();
+        hideSystemInterface();
         description.setText(stepsList.get(list_pos).getDescription());
         current.setText((list_pos+1)+"/"+stepsList.size());
     }
@@ -275,6 +280,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    @SuppressLint("InlinedApi")
     private void hideSystemInterface() {
         if(tablet)
         {
@@ -300,6 +306,12 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        f2.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
     }
     @Override
@@ -308,6 +320,34 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
         releasePlayer();
 
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (tablet)
+            return;
+
+        ViewTreeObserver viewTreeObserver = layout.getViewTreeObserver();
+        viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                layout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+
+
+                int track = getResources().getConfiguration().orientation;
+                if (track != 1) {
+                    width = layout.getMeasuredWidth();
+                    height = layout.getMeasuredHeight();
+                    f1.setLayoutParams(new LinearLayout.LayoutParams(width, height));
+                    f2.setLayoutParams(new LinearLayout.LayoutParams(width, height));
+                } else {
+                    height = layout.getMeasuredWidth();
+                    width = layout.getMeasuredHeight();
+                }
+            }
+        });
+    }
+
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("index",index);

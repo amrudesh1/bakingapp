@@ -70,7 +70,10 @@ public class IngredientsActivity extends AppCompatActivity implements FragmentLi
                 tablet = false;
             }
         } else {
+            recipe = savedInstanceState.getParcelable("recipe");
+            currentPosition = savedInstanceState.getInt("current");
             stepsFragment =(StepsFragment) getSupportFragmentManager().getFragment(savedInstanceState,"Step");
+            stepsFragment = new StepsFragment();
             if (!stepsFragment.isAdded())
                 getSupportFragmentManager().beginTransaction().add(R.id.fragmentOne, stepsFragment).commit();
 
@@ -106,6 +109,8 @@ public class IngredientsActivity extends AppCompatActivity implements FragmentLi
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         getSupportFragmentManager().putFragment(outState, "main", stepsFragment);
+        outState.putInt("current",currentPosition);
+        outState.putParcelable("recipe",recipe);
 
         if (tablet && detailsFragment!=null)
         {
@@ -114,5 +119,14 @@ public class IngredientsActivity extends AppCompatActivity implements FragmentLi
             }catch (NullPointerException e) {}
 
         }
-}
+
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (detailsFragment == null) {
+            tablet = false;
+        }
+    }
+
     }

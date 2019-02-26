@@ -107,9 +107,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
             arrayPosition = bundle.getInt("current");
             tablet = bundle.getBoolean("tablet");
 
-            Log.i("TAG_ARRAY_VALUE", String.valueOf(arrayPosition));
-            Log.i("TAG_POS_DETAIL", String.valueOf(index));
-            Log.i("TAG_POS_TAB", String.valueOf(tablet));
+
         } else {
             index = bundle.getInt("index");
             arrayPosition = bundle.getInt("current");
@@ -269,8 +267,20 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
 
         if (tablet)
             return;
+        //First Hide other objects (listview or recyclerview), better hide them using Gone.
         hideSystemInterface();
-
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) playerView.getLayoutParams();
+            params.width=params.MATCH_PARENT;
+            params.height=params.MATCH_PARENT;
+            playerView.setLayoutParams(params);
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            //unhide your objects here.
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) playerView.getLayoutParams();
+            params.width=params.MATCH_PARENT;
+            params.height=600;
+            playerView.setLayoutParams(params);
+        }
 
     }
 

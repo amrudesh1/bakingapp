@@ -53,8 +53,8 @@ public class StepsFragment extends Fragment {
     @BindView(R.id.ingredientList)
     RecyclerView r1;
 
-    private List<Ingredients> ingredientsList;
-    private List<Steps> stepsList;
+    private ArrayList<Ingredients> ingredientsList;
+    private ArrayList<Steps> stepsList;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -72,7 +72,7 @@ public class StepsFragment extends Fragment {
         stepsList = new ArrayList<>();
         queue = Volley.newRequestQueue(getActivity());
         ButterKnife.bind(this,view);
-
+        setRetainInstance(true);
 
 
         if (savedInstanceState == null)
@@ -81,11 +81,14 @@ public class StepsFragment extends Fragment {
             index = bundle.getInt("index");
             ingredientsList = getIngredients(index);
             stepsList=getSteps(index);
+            tablet = bundle.getBoolean("tablet",false);
+
         }
         else
         {
-            ingredientsList = getIngredients(index);
-            stepsList = getSteps(index);
+            index = 2;
+            ingredientsList = savedInstanceState.getParcelableArrayList("ingredients");
+            stepsList =  savedInstanceState.getParcelableArrayList("steps");
             tablet = savedInstanceState.getBoolean("tablet",false);
         }
 
@@ -114,7 +117,7 @@ public class StepsFragment extends Fragment {
 
 
 
-        private List<Steps> getSteps(final int index)
+        private ArrayList<Steps> getSteps(final int index)
     {
         JsonArrayRequest stepsRequest = new JsonArrayRequest
                 (Request.Method.GET, Constants.BASE_URL, null, new Response.Listener<JSONArray>() {
@@ -165,7 +168,7 @@ public class StepsFragment extends Fragment {
 
 
 
-    private List<Ingredients> getIngredients(final int index) {
+    private ArrayList<Ingredients> getIngredients(final int index) {
 
         JsonArrayRequest arrayRequest = new JsonArrayRequest
                 (Request.Method.GET, Constants.BASE_URL, null, new Response.Listener<JSONArray>() {
@@ -206,6 +209,18 @@ public class StepsFragment extends Fragment {
                 });
         queue.add(arrayRequest);
         return ingredientsList;
+    }
+    @Override
+
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("ingredients",ingredientsList);
+        outState.putParcelableArrayList("steps",stepsList);
+        outState.putBoolean("tablet",tablet);
+        outState.putInt("position",index);
+        outState.putInt("x1",((LinearLayoutManager)r1.getLayoutManager()).findFirstCompletelyVisibleItemPosition());
+        outState.putInt("x2",((LinearLayoutManager)r2.getLayoutManager()).findFirstCompletelyVisibleItemPosition());
+
     }
 }
 

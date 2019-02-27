@@ -1,38 +1,17 @@
 package com.application.amrudesh.bakingapp.Activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import butterknife.BindView;
-
-import android.content.Context;
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.provider.ContactsContract;
-import android.util.Log;
 import android.widget.FrameLayout;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
-import com.application.amrudesh.bakingapp.Data.Ingredients;
 import com.application.amrudesh.bakingapp.Data.Recipe;
-import com.application.amrudesh.bakingapp.Data.Steps;
 import com.application.amrudesh.bakingapp.Fragments.DetailsFragment;
 import com.application.amrudesh.bakingapp.Fragments.StepsFragment;
 import com.application.amrudesh.bakingapp.R;
-import com.application.amrudesh.bakingapp.Util.Constants;
 import com.application.amrudesh.bakingapp.Util.FragmentListerner;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
+import androidx.appcompat.app.AppCompatActivity;
+import butterknife.BindView;
 
 public class IngredientsActivity extends AppCompatActivity implements FragmentListerner {
 
@@ -55,7 +34,6 @@ public class IngredientsActivity extends AppCompatActivity implements FragmentLi
         setContentView(R.layout.activity_recipe);
         recipe =(Recipe) getIntent().getParcelableExtra("recipe");
         currentPosition = recipe.getId();
-        frameLayout = (FrameLayout) findViewById(R.id.fragmentTwo);
         tablet = true;
         Bundle bundle = new Bundle();
         bundle.putInt("index",currentPosition);

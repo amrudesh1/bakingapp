@@ -64,7 +64,7 @@ public class IngredientsActivity extends AppCompatActivity implements FragmentLi
 
             stepsFragment = new StepsFragment();
             stepsFragment.setArguments(bundle);
-            getSupportFragmentManager().beginTransaction().addToBackStack("TAG").add(R.id.fragmentOne, stepsFragment, null).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.fragmentOne, stepsFragment, null).commit();
 
             if (frameLayout == null) {
                 tablet = false;

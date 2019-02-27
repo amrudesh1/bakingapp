@@ -94,6 +94,7 @@ public class StepsFragment extends Fragment {
 
         return view;
 
+
     }
 
 
@@ -103,6 +104,7 @@ public class StepsFragment extends Fragment {
 
         r1.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, true));
         IngredientsAdapter ingredientsAdapter = new IngredientsAdapter(getActivity(),ingredientsList);
+        r1.getLayoutManager().scrollToPosition(0);
         r1.setAdapter(ingredientsAdapter);
         r1.getAdapter().notifyDataSetChanged();
 

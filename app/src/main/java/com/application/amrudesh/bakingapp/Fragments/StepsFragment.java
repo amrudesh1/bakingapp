@@ -86,7 +86,7 @@ public class StepsFragment extends Fragment {
         }
         else
         {
-            index = 2;
+            index = savedInstanceState.getInt("index");
             ingredientsList = savedInstanceState.getParcelableArrayList("ingredients");
             stepsList =  savedInstanceState.getParcelableArrayList("steps");
             tablet = savedInstanceState.getBoolean("tablet",false);
@@ -102,9 +102,8 @@ public class StepsFragment extends Fragment {
 
 
 
-        r1.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, true));
+        r1.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         IngredientsAdapter ingredientsAdapter = new IngredientsAdapter(getActivity(),ingredientsList);
-        r1.getLayoutManager().scrollToPosition(0);
         r1.setAdapter(ingredientsAdapter);
         r1.getAdapter().notifyDataSetChanged();
 

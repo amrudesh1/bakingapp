@@ -1,12 +1,7 @@
 package com.application.amrudesh.bakingapp.Fragments;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
 import android.content.res.Configuration;
-import android.media.Image;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,7 +23,7 @@ import com.application.amrudesh.bakingapp.Data.Steps;
 import com.application.amrudesh.bakingapp.R;
 import com.application.amrudesh.bakingapp.Util.Constants;
 import com.application.amrudesh.bakingapp.Util.FragmentListerner;
-import com.google.android.exoplayer2.ExoPlayer;
+import com.application.amrudesh.bakingapp.Util.IOnFocusListenable;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
@@ -36,7 +31,6 @@ import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
@@ -56,7 +50,7 @@ import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DetailsFragment extends Fragment implements View.OnClickListener {
+public class DetailsFragment extends Fragment implements View.OnClickListener,IOnFocusListenable {
     private JSONObject list, StepsJsonList;
     private JSONArray StepsArray;
     View view;
@@ -86,10 +80,10 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
     TextView current;
     int fs;
 
-    int width = 0;
-    int height = 0;
-    int index, arrayPosition;
-    boolean tablet;
+   private int width = 0;
+   private int height = 0;
+   private int index, arrayPosition;
+   private boolean tablet;
 
 
     @Override
@@ -267,57 +261,53 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
 
         if (tablet)
             return;
-        //First Hide other objects (listview or recyclerview), better hide them using Gone.
         hideSystemInterface();
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) playerView.getLayoutParams();
             params.width=params.MATCH_PARENT;
             params.height=params.MATCH_PARENT;
-            playerView.setLayoutParams(params);
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-            //unhide your objects here.
-            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) playerView.getLayoutParams();
-            params.width=params.MATCH_PARENT;
-            params.height=600;
-            playerView.setLayoutParams(params);
+
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            f1.setLayoutParams(new LinearLayout.LayoutParams(height, width / 2));
+            f2.setLayoutParams(new LinearLayout.LayoutParams(height, width / 2));
         }
 
-    }
 
-    @SuppressLint("InlinedApi")
-    private void hideSystemInterface() {
-        if(tablet)
-        {
-            return;
+
         }
-        playerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
-        empty.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
-        imageView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-        f2.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        private void hideSystemInterface () {
+            if (tablet) {
+                return;
+            }
+            playerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
-    }
+            empty.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+
+            imageView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+
+            Log.i("TAG_WINDOW", "Invoked");
+
+
+        }
+
+
     @Override
     public void onPause() {
         super.onPause();
@@ -330,12 +320,11 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
         super.onStart();
         if (tablet)
             return;
-
-        ViewTreeObserver viewTreeObserver = layout.getViewTreeObserver();
-        viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        ViewTreeObserver vto = layout.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                layout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                layout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
 
                 int track = getResources().getConfiguration().orientation;
@@ -350,12 +339,27 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
-    }
+
+            }
+
+
+
 
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("index",index);
-        outState.putInt("cuurent",arrayPosition);
+        outState.putInt("current",arrayPosition);
         outState.putBoolean("tablet",tablet);
+    }
+
+
+
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+
+    hideSystemInterface();
+        Log.i("ORIENTAITON","invoked");
+
     }
 }

@@ -21,7 +21,6 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.application.amrudesh.bakingapp.Data.Ingredients;
 import com.application.amrudesh.bakingapp.Data.Recipe;
-import com.application.amrudesh.bakingapp.Data.Widget;
 import com.application.amrudesh.bakingapp.R;
 import com.application.amrudesh.bakingapp.Util.Constants;
 
@@ -54,10 +53,6 @@ public class WidgetConfigration extends Activity {
         public void onClick(View v) {
 
             int position = spinner.getSelectedItemPosition();
-            Widget widget = new Widget();
-            widget.setRecipeName(recipesList.get(position).getName());
-            widget.setIngredientsArrayList(ingredientsList);
-            Log.i("SIZE_WID",String.valueOf(widget.getIngredientsArrayList().size()));
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(WidgetConfigration.this);
             BakingWidget.updateAppWidget(WidgetConfigration.this,appWidgetManager, appWidgetId);
             RemoteViews views = new RemoteViews(getPackageName(),R.layout.baking_widget);

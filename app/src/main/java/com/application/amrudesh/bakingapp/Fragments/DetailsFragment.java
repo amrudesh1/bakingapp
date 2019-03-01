@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -257,19 +258,24 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onConfigurationChanged(final Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-
-        if (tablet)
+        if (tablet) {
             return;
-
+        }
         hideSystemInterface();
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            f1.setLayoutParams(new LinearLayout.LayoutParams(width, height));
-            f2.setLayoutParams(new LinearLayout.LayoutParams(width, height));
-
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            f1.setLayoutParams(new LinearLayout.LayoutParams(height, width / 2));
-            f2.setLayoutParams(new LinearLayout.LayoutParams(height, width / 2));
+            //First Hide other objects (listview or recyclerview), better hide them using Gone.
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) playerView.getLayoutParams();
+            params.width=params.MATCH_PARENT;
+            params.height=params.MATCH_PARENT;
+            playerView.setLayoutParams(params);
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            //unhide your objects here.
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) playerView.getLayoutParams();
+            params.width=params.MATCH_PARENT;
+            params.height=600;
+            playerView.setLayoutParams(params);
         }
+
 
     }
 

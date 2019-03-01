@@ -19,9 +19,6 @@ public class IngredientsActivity extends AppCompatActivity implements FragmentLi
     private int currentPosition;
     private Boolean tablet;
 
-
-
-    @BindView(R.id.fragmentTwo)
     FrameLayout frameLayout;
     DetailsFragment detailsFragment;
     StepsFragment stepsFragment;
@@ -33,20 +30,23 @@ public class IngredientsActivity extends AppCompatActivity implements FragmentLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
         recipe =(Recipe) getIntent().getParcelableExtra("recipe");
-        currentPosition = recipe.getId();
         frameLayout = (FrameLayout) findViewById(R.id.fragmentTwo);
+        currentPosition = recipe.getId();
         tablet = true;
         Bundle bundle = new Bundle();
         bundle.putInt("index",currentPosition);
-        bundle.putBoolean("tablet",tablet);
+        bundle.putBoolean("tablet",(frameLayout != null));
         if (savedInstanceState == null) {
 
             stepsFragment = new StepsFragment();
             stepsFragment.setArguments(bundle);
-            getSupportFragmentManager().beginTransaction().add(R.id.fragmentOne, stepsFragment, null).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.fragmentOne, stepsFragment).commit();
 
             if (frameLayout == null) {
                 tablet = false;
+            }
+            else {
+                this.setStep(0);
             }
         } else {
             stepsFragment =(StepsFragment) getSupportFragmentManager().getFragment(savedInstanceState,"main");
@@ -95,4 +95,13 @@ public class IngredientsActivity extends AppCompatActivity implements FragmentLi
 
         }
 }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (frameLayout==null)
+        {
+            tablet=false;
+        }
     }
+}

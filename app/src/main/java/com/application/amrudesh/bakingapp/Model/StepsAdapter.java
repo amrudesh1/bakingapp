@@ -2,6 +2,7 @@ package com.application.amrudesh.bakingapp.Model;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> 
     FragmentListerner fragmentListerner;
     Context ctx;
     List<Steps> stepsList;
+    int selectedPosition=-1;
 
     public StepsAdapter(Context ctx, List<Steps> stepsList,FragmentListerner fragmentListerner) {
         this.ctx = ctx;
@@ -42,7 +44,7 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull StepsAdapter.ViewHolder holder, final int position) {
             Steps steps = stepsList.get(position);
             holder.step.setText(steps.getShortdescription());
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     fragmentListerner.setStep(position);

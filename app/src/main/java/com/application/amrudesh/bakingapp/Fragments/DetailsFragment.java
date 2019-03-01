@@ -129,16 +129,19 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
         if (index >=stepsList.size()-1) {
             f1.hide(); } else {
             f1.show(); }
+            if (tablet == true)
+            {
+                frameLayout2.setVisibility(View.VISIBLE);
+            }
 
     }
 
     private void ListTheSteps(List<Steps> stepsList, int list_pos) {
 
-        Log.i("Steps_Function", stepsList.get(list_pos).getShortdescription());
+        releasePlayer();
         if (stepsList.get(list_pos).getVideoURL().isEmpty() && stepsList.get(list_pos).getThumbnailURL().isEmpty())
         {
             playerView.setVisibility(View.GONE);
-            releasePlayer();
             imageView.setVisibility(View.GONE);
             empty.setVisibility(View.VISIBLE);
             empty.setText("No videos or Thumbnails to Display");
@@ -256,6 +259,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
 
     private void releasePlayer() {
         if (exoPlayer != null) {
+            exoPlayer.stop();
             exoPlayer.release();
             exoPlayer = null;
         }
@@ -302,9 +306,17 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onPause() {
         super.onPause();
-        playerPosition =  exoPlayer.getCurrentPosition();
         releasePlayer();
+//        playerPosition =  exoPlayer.getCurrentPosition();
+        Log.i("PLAYER","ONPAUSE METHOD CALLED");
 
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        {
+            releasePlayer();
+        }
     }
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -319,7 +331,6 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-
         if (url != null)
         {
             initilisePlayer(url);

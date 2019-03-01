@@ -34,6 +34,7 @@ public class IngredientsActivity extends AppCompatActivity implements FragmentLi
         setContentView(R.layout.activity_recipe);
         recipe =(Recipe) getIntent().getParcelableExtra("recipe");
         currentPosition = recipe.getId();
+        frameLayout = (FrameLayout) findViewById(R.id.fragmentTwo);
         tablet = true;
         Bundle bundle = new Bundle();
         bundle.putInt("index",currentPosition);
@@ -42,16 +43,13 @@ public class IngredientsActivity extends AppCompatActivity implements FragmentLi
 
             stepsFragment = new StepsFragment();
             stepsFragment.setArguments(bundle);
-            getSupportFragmentManager().beginTransaction().add(R.id.fragmentOne, stepsFragment).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.fragmentOne, stepsFragment, null).commit();
 
             if (frameLayout == null) {
                 tablet = false;
             }
         } else {
-            recipe = savedInstanceState.getParcelable("recipe");
-            currentPosition = savedInstanceState.getInt("current");
             stepsFragment =(StepsFragment) getSupportFragmentManager().getFragment(savedInstanceState,"main");
-            stepsFragment = new StepsFragment();
             if (!stepsFragment.isAdded())
                 getSupportFragmentManager().beginTransaction().add(R.id.fragmentOne, stepsFragment).commit();
 
@@ -71,6 +69,7 @@ public class IngredientsActivity extends AppCompatActivity implements FragmentLi
         if (!tablet) {
             Intent intent = new Intent(this, StepActivity.class);
             intent.putExtra("current", currentPosition);
+            intent.putExtra("index",index);
             startActivity(intent);
         }
         else
@@ -87,8 +86,6 @@ public class IngredientsActivity extends AppCompatActivity implements FragmentLi
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         getSupportFragmentManager().putFragment(outState, "main", stepsFragment);
-        outState.putInt("current",currentPosition);
-        outState.putParcelable("recipe",recipe);
 
         if (tablet && detailsFragment!=null)
         {
@@ -97,14 +94,5 @@ public class IngredientsActivity extends AppCompatActivity implements FragmentLi
             }catch (NullPointerException e) {}
 
         }
-
-    }
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (detailsFragment == null) {
-            tablet = false;
-        }
-    }
-
+}
     }

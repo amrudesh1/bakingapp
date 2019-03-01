@@ -2,6 +2,7 @@ package com.application.amrudesh.bakingapp.Model;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,7 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> 
                 @Override
                 public void onClick(View v) {
                     fragmentListerner.setStep(position);
+                    Log.i("Steps_Position",String.valueOf(position));
                 }
             });
     }

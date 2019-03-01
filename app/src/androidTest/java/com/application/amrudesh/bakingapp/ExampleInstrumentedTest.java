@@ -23,6 +23,7 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = ApplicationProvider.getApplicationContext();
+
         assertEquals("com.application.amrudesh.bakingapp", appContext.getPackageName());
     }
 }

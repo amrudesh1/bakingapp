@@ -16,10 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
-            <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-                android:id="@+id/playerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
             <TextView
                 android:id="@+id/empty"
                 android:layout_width="match_parent"
@@ -31,7 +27,10 @@
                 android:padding="16dp"
                 android:visibility="gone" />
 
-
+            <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+                android:id="@+id/playerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
             <ImageView
                 android:id="@+id/image"

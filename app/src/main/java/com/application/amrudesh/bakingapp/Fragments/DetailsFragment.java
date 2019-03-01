@@ -7,11 +7,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -24,7 +22,6 @@ import com.application.amrudesh.bakingapp.Data.Steps;
 import com.application.amrudesh.bakingapp.R;
 import com.application.amrudesh.bakingapp.Util.Constants;
 import com.application.amrudesh.bakingapp.Util.FragmentListerner;
-import com.application.amrudesh.bakingapp.Util.IOnFocusListenable;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
@@ -32,7 +29,6 @@ import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
@@ -52,14 +48,14 @@ import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DetailsFragment extends Fragment implements View.OnClickListener,IOnFocusListenable {
+public class DetailsFragment extends Fragment implements View.OnClickListener {
     private JSONObject list, StepsJsonList;
     private JSONArray StepsArray;
     View view;
+    FragmentListerner listerner;
     RequestQueue queue;
     List<Steps> stepsList;
     SimpleExoPlayer exoPlayer;
-
     @BindView(R.id.playerView)
     PlayerView playerView;
     @BindView(R.id.f1)
@@ -80,12 +76,11 @@ public class DetailsFragment extends Fragment implements View.OnClickListener,IO
     TextView empty;
     @BindView(R.id.current)
     TextView current;
-    int fs;
 
-   private int width = 0;
-   private int height = 0;
-   private int index, arrayPosition;
-   private boolean tablet;
+    int width = 0;
+    int height = 0;
+    int index, arrayPosition;
+    boolean tablet;
 
 
     @Override
@@ -103,7 +98,9 @@ public class DetailsFragment extends Fragment implements View.OnClickListener,IO
             arrayPosition = bundle.getInt("current");
             tablet = bundle.getBoolean("tablet");
 
-
+            Log.i("TAG_ARRAY_VALUE", String.valueOf(arrayPosition));
+            Log.i("TAG_POS_DETAIL", String.valueOf(index));
+            Log.i("TAG_POS_TAB", String.valueOf(tablet));
         } else {
             index = bundle.getInt("index");
             arrayPosition = bundle.getInt("current");
@@ -112,7 +109,6 @@ public class DetailsFragment extends Fragment implements View.OnClickListener,IO
         }
 
         stepsList = getSteps(arrayPosition, index);
-
         f1.setOnClickListener(this);
         f2.setOnClickListener(this);
 
@@ -165,7 +161,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener,IO
                     .placeholder(R.drawable.no_image_found)
                     .into(imageView);
         }
-        hideSystemInterface();
+    hideSystemInterface();
         description.setText(stepsList.get(list_pos).getDescription());
         current.setText((list_pos+1)+"/"+stepsList.size());
 
@@ -205,6 +201,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener,IO
                             }
 
                         }
+
                         ListTheSteps(stepsList, click_loc);
                         showUI();
                         Log.i("Steps",String.valueOf(stepsList.size()));
@@ -263,107 +260,56 @@ public class DetailsFragment extends Fragment implements View.OnClickListener,IO
 
         if (tablet)
             return;
+
         hideSystemInterface();
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) playerView.getLayoutParams();
-            params.width=params.MATCH_PARENT;
-            params.height=params.MATCH_PARENT;
-            playerView.setLayoutParams(params);
+            f1.setLayoutParams(new LinearLayout.LayoutParams(width, height));
+            f2.setLayoutParams(new LinearLayout.LayoutParams(width, height));
+
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) playerView.getLayoutParams();
-            params.width=params.MATCH_PARENT;
-            params.height=600;
-            playerView.setLayoutParams(params);
+            f1.setLayoutParams(new LinearLayout.LayoutParams(height, width / 2));
+            f2.setLayoutParams(new LinearLayout.LayoutParams(height, width / 2));
         }
 
+    }
 
-
+    private void hideSystemInterface() {
+        if(tablet)
+        {
+            return;
         }
+        playerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
+        empty.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
-        private void hideSystemInterface () {
-            if (tablet) {
-                return;
-            }
-            playerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        imageView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
-            empty.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-
-            imageView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-
-            Log.i("TAG_WINDOW", "Invoked");
-
-
-        }
-
-
+    }
     @Override
     public void onPause() {
         super.onPause();
         releasePlayer();
 
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (tablet)
-            return;
-        ViewTreeObserver vto = layout.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                layout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-
-
-                int track = getResources().getConfiguration().orientation;
-                if (track != 1) {
-                    width = layout.getMeasuredWidth();
-                    height = layout.getMeasuredHeight();
-                    f1.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-                    f2.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
-                } else {
-                    height = layout.getMeasuredWidth();
-                    width = layout.getMeasuredHeight();
-                }
-            }
-        });
-
-            }
-
-
-
-
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("index",index);
         outState.putInt("current",arrayPosition);
         outState.putBoolean("tablet",tablet);
-    }
-
-
-
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-
-    hideSystemInterface();
-        Log.i("ORIENTAITON","invoked");
-
     }
 }

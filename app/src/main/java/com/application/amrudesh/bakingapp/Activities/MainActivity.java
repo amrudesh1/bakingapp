@@ -14,11 +14,9 @@ import com.application.amrudesh.bakingapp.Data.Recipe;
 import com.application.amrudesh.bakingapp.Model.RecipeAdapter;
 import com.application.amrudesh.bakingapp.R;
 import com.application.amrudesh.bakingapp.Util.Constants;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.recipesList) RecyclerView recyclerView;
     private RecipeAdapter recipeAdapter;
     private CountingIdlingResource countingIdlingResource = new CountingIdlingResource("Network_call");
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,19 +102,16 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                        Log.i("TAG_ERROR",error.toString());
-                        countingIdlingResource.decrement();
-
+                        countingIdlingResource.increment();
                     }
                 });
 
         requestQueue.add(jsonObjectRequest);
         return nameList;
     }
-
     @VisibleForTesting
     @NonNull
     public CountingIdlingResource getEspressoIdlingResourceForMainActivity() {
         return countingIdlingResource;
     }
-
 }

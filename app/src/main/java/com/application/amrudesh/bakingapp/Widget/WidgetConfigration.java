@@ -21,6 +21,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.application.amrudesh.bakingapp.Data.Ingredients;
 import com.application.amrudesh.bakingapp.Data.Recipe;
+import com.application.amrudesh.bakingapp.Data.Widget;
 import com.application.amrudesh.bakingapp.R;
 import com.application.amrudesh.bakingapp.Util.Constants;
 
@@ -46,8 +47,6 @@ public class WidgetConfigration extends Activity {
     @BindView(R.id.add_button)
     Button btn;
     RequestQueue queue;
-    RemoteViews views;
-    AppWidgetManager appWidgetManager;
 
 
     View.OnClickListener PassListListener = new View.OnClickListener() {
@@ -55,19 +54,23 @@ public class WidgetConfigration extends Activity {
         public void onClick(View v) {
 
             int position = spinner.getSelectedItemPosition();
-//            BakingWidget.updateAppWidget(WidgetConfigration.this,appWidgetManager, appWidgetId);
+            Widget widget = new Widget();
+            widget.setRecipeName(recipesList.get(position).getName());
+            widget.setIngredientsArrayList(ingredientsList);
+            Log.i("SIZE_WID",String.valueOf(widget.getIngredientsArrayList().size()));
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(WidgetConfigration.this);
+            BakingWidget.updateAppWidget(WidgetConfigration.this,appWidgetManager, appWidgetId);
+            RemoteViews views = new RemoteViews(getPackageName(),R.layout.baking_widget);
             WidgetRemoteService.setIngredientsArrayList(ingredientsList);
             Intent intent = new Intent(WidgetConfigration.this, WidgetRemoteService.class);
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
-            setResult(RESULT_OK, intent);
             views.setRemoteAdapter(R.id.listViewWidget, intent);
+            Log.i("SIZE",String.valueOf(ingredientsList.size()));
             views.setTextViewText(R.id.recipe_title, recipesList.get(position).getName());
             appWidgetManager.updateAppWidget(appWidgetId,views);
+            setResult(RESULT_OK, new Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId));
             finish();
-
-
-
 
         }
     };
@@ -79,8 +82,7 @@ public class WidgetConfigration extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.widget_configration);
         ButterKnife.bind(this);
-        views =new RemoteViews(getPackageName(),R.layout.baking_widget);
-        appWidgetManager= AppWidgetManager.getInstance(WidgetConfigration.this);
+
         queue = Volley.newRequestQueue(this);
         onResponse();
         btn.setOnClickListener(PassListListener);

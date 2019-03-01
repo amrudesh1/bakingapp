@@ -1,7 +1,6 @@
 package com.application.amrudesh.bakingapp.RecyclerViewMatcher;
 
 import android.content.res.Resources;
-
 import android.view.View;
 
 import org.hamcrest.Description;

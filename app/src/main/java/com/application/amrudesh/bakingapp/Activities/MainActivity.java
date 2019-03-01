@@ -19,10 +19,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.test.espresso.idling.CountingIdlingResource;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -33,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private Boolean tablet;
     @BindView(R.id.recipesList) RecyclerView recyclerView;
     private RecipeAdapter recipeAdapter;
-
+    private CountingIdlingResource countingIdlingResource = new CountingIdlingResource("Network_call");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         requestQueue = Volley.newRequestQueue(this);
         screenSize();
         nameList = new ArrayList<>();
+        countingIdlingResource.increment();
         getRecipieData();
         recipeAdapter = new RecipeAdapter(this, nameList);
         recyclerView.setAdapter(recipeAdapter);
@@ -88,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                             recipeAdapter.notifyDataSetChanged();
                         }
+                        countingIdlingResource.decrement();
 
 
                     }
@@ -96,12 +102,16 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                        Log.i("TAG_ERROR",error.toString());
-
+                        countingIdlingResource.increment();
                     }
                 });
 
         requestQueue.add(jsonObjectRequest);
         return nameList;
     }
-
+    @VisibleForTesting
+    @NonNull
+    public CountingIdlingResource getEspressoIdlingResourceForMainActivity() {
+        return countingIdlingResource;
+    }
 }

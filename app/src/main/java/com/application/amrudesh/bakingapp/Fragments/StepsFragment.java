@@ -98,7 +98,7 @@ public class StepsFragment extends Fragment {
 
 
 
-        r1.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, true));
+        r1.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         IngredientsAdapter ingredientsAdapter = new IngredientsAdapter(getActivity(),ingredientsList);
         r1.setAdapter(ingredientsAdapter);
         r1.getAdapter().notifyDataSetChanged();

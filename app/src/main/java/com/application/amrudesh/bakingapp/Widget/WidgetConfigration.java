@@ -69,8 +69,6 @@ public class WidgetConfigration extends Activity {
             Log.i("SIZE",String.valueOf(ingredientsList.size()));
             views.setTextViewText(R.id.recipe_title, recipesList.get(position).getName());
             appWidgetManager.updateAppWidget(appWidgetId,views);
-
-
             setResult(RESULT_OK, new Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId));
             finish();
 

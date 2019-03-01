@@ -23,6 +23,7 @@ import com.application.amrudesh.bakingapp.Data.Steps;
 import com.application.amrudesh.bakingapp.R;
 import com.application.amrudesh.bakingapp.Util.Constants;
 import com.application.amrudesh.bakingapp.Util.FragmentListerner;
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
@@ -78,11 +79,10 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
     @BindView(R.id.current)
     TextView current;
 
-    int width = 0;
-    int height = 0;
+    long playerPosition;
     int index, arrayPosition;
     boolean tablet;
-
+    private String url;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -103,9 +103,11 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
             Log.i("TAG_POS_DETAIL", String.valueOf(index));
             Log.i("TAG_POS_TAB", String.valueOf(tablet));
         } else {
-            index = bundle.getInt("index");
-            arrayPosition = bundle.getInt("current");
+            index = savedInstanceState.getInt("index");
+            arrayPosition = savedInstanceState.getInt("current");
             tablet = savedInstanceState.getBoolean("tablet");
+            playerPosition = savedInstanceState.getLong("position");
+            url = savedInstanceState.getString("url");
 
         }
 
@@ -114,7 +116,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
         f2.setOnClickListener(this);
 
 
-
+        Log.i("PLAYER",String.valueOf(playerPosition));
         return view;
 
     }
@@ -144,7 +146,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
         }
         else if(!stepsList.get(list_pos).getVideoURL().isEmpty())
         {
-            String url = stepsList.get(list_pos).getVideoURL();
+            url = stepsList.get(list_pos).getVideoURL();
             empty.setVisibility(View.GONE);
             imageView.setVisibility(View.GONE);
             playerView.setVisibility(View.VISIBLE);
@@ -244,7 +246,11 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
                 Util.getUserAgent(getActivity(), "Videoplayer"));
         MediaSource mediaSource = new ExtractorMediaSource.Factory(datasourceFactory)
                 .createMediaSource(Uri.parse(url));
+        if (playerPosition != C.TIME_UNSET) {
+            exoPlayer.seekTo(playerPosition);
+        }
         exoPlayer.prepare(mediaSource,true, false);
+
 
     }
 
@@ -261,20 +267,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
         if (tablet) {
             return;
         }
-        hideSystemInterface();
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            //First Hide other objects (listview or recyclerview), better hide them using Gone.
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) playerView.getLayoutParams();
-            params.width=params.MATCH_PARENT;
-            params.height=params.MATCH_PARENT;
-            playerView.setLayoutParams(params);
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-            //unhide your objects here.
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) playerView.getLayoutParams();
-            params.width=params.MATCH_PARENT;
-            params.height=600;
-            playerView.setLayoutParams(params);
-        }
+
 
 
     }
@@ -309,13 +302,27 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onPause() {
         super.onPause();
+        playerPosition =  exoPlayer.getCurrentPosition();
         releasePlayer();
 
     }
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+
+        outState.putLong("position",playerPosition);
         outState.putInt("index",index);
         outState.putInt("current",arrayPosition);
         outState.putBoolean("tablet",tablet);
+        outState.putString("url",url);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (url != null)
+        {
+            initilisePlayer(url);
+        }
     }
 }

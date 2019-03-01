@@ -11,6 +11,7 @@ import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -31,6 +32,7 @@ import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
@@ -54,10 +56,10 @@ public class DetailsFragment extends Fragment implements View.OnClickListener,IO
     private JSONObject list, StepsJsonList;
     private JSONArray StepsArray;
     View view;
-    FragmentListerner listerner;
     RequestQueue queue;
     List<Steps> stepsList;
     SimpleExoPlayer exoPlayer;
+
     @BindView(R.id.playerView)
     PlayerView playerView;
     @BindView(R.id.f1)
@@ -263,13 +265,15 @@ public class DetailsFragment extends Fragment implements View.OnClickListener,IO
             return;
         hideSystemInterface();
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) playerView.getLayoutParams();
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) playerView.getLayoutParams();
             params.width=params.MATCH_PARENT;
             params.height=params.MATCH_PARENT;
-
+            playerView.setLayoutParams(params);
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            f1.setLayoutParams(new LinearLayout.LayoutParams(height, width / 2));
-            f2.setLayoutParams(new LinearLayout.LayoutParams(height, width / 2));
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) playerView.getLayoutParams();
+            params.width=params.MATCH_PARENT;
+            params.height=600;
+            playerView.setLayoutParams(params);
         }
 
 
@@ -331,8 +335,8 @@ public class DetailsFragment extends Fragment implements View.OnClickListener,IO
                 if (track != 1) {
                     width = layout.getMeasuredWidth();
                     height = layout.getMeasuredHeight();
-                    f1.setLayoutParams(new LinearLayout.LayoutParams(width, height));
-                    f2.setLayoutParams(new LinearLayout.LayoutParams(width, height));
+                    f1.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
+                    f2.setLayoutParams(new RelativeLayout.LayoutParams(width, height));
                 } else {
                     height = layout.getMeasuredWidth();
                     width = layout.getMeasuredHeight();

@@ -42,7 +42,7 @@ public class IngredientsActivity extends AppCompatActivity implements FragmentLi
 
             stepsFragment = new StepsFragment();
             stepsFragment.setArguments(bundle);
-            getSupportFragmentManager().beginTransaction().add(R.id.fragmentOne, stepsFragment, null).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.fragmentOne, stepsFragment).commit();
 
             if (frameLayout == null) {
                 tablet = false;
@@ -50,7 +50,7 @@ public class IngredientsActivity extends AppCompatActivity implements FragmentLi
         } else {
             recipe = savedInstanceState.getParcelable("recipe");
             currentPosition = savedInstanceState.getInt("current");
-            stepsFragment =(StepsFragment) getSupportFragmentManager().getFragment(savedInstanceState,"Step");
+            stepsFragment =(StepsFragment) getSupportFragmentManager().getFragment(savedInstanceState,"main");
             stepsFragment = new StepsFragment();
             if (!stepsFragment.isAdded())
                 getSupportFragmentManager().beginTransaction().add(R.id.fragmentOne, stepsFragment).commit();

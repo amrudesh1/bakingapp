@@ -129,6 +129,10 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
         if (index >=stepsList.size()-1) {
             f1.hide(); } else {
             f1.show(); }
+            if (tablet == true)
+            {
+                frameLayout2.setVisibility(View.VISIBLE);
+            }
 
     }
 

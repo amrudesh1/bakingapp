@@ -20,9 +20,7 @@ DetailsFragment detailsFragment;
         if (savedInstanceState == null) {
             Bundle bundle = getIntent().getExtras();
 
-            if (bundle.containsKey("name")) {
-                getSupportActionBar().setTitle(bundle.getString("name") + " Steps");
-            }
+
             bundle.putBoolean("tablet", false);
             detailsFragment = new DetailsFragment();
             detailsFragment.setArguments(bundle);

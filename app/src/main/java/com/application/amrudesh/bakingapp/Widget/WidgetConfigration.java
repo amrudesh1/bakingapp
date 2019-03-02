@@ -1,6 +1,7 @@
 package com.application.amrudesh.bakingapp.Widget;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.net.Uri;
@@ -19,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.application.amrudesh.bakingapp.Activities.MainActivity;
 import com.application.amrudesh.bakingapp.Data.Ingredients;
 import com.application.amrudesh.bakingapp.Data.Recipe;
 import com.application.amrudesh.bakingapp.R;
@@ -63,6 +65,9 @@ public class WidgetConfigration extends Activity {
             views.setRemoteAdapter(R.id.listViewWidget, intent);
             Log.i("SIZE",String.valueOf(ingredientsList.size()));
             views.setTextViewText(R.id.recipe_title, recipesList.get(position).getName());
+            Intent appIntent = new Intent(getApplicationContext(), MainActivity.class);
+            PendingIntent appPendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, appIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            views.setOnClickPendingIntent(R.id.parent_relative_layout, appPendingIntent);
             appWidgetManager.updateAppWidget(appWidgetId,views);
             setResult(RESULT_OK, new Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId));
             finish();

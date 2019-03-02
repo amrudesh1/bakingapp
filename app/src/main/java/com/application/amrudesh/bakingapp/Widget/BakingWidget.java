@@ -24,7 +24,7 @@ public class BakingWidget extends AppWidgetProvider {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_widget);
         Intent appIntent = new Intent(context, MainActivity.class);
         PendingIntent appPendingIntent = PendingIntent.getActivity(context, 0, appIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        views.setOnClickPendingIntent(R.id.listViewWidget, appPendingIntent);
+        views.setOnClickPendingIntent(R.id.parent_relative_layout, appPendingIntent);
         appWidgetManager.updateAppWidget(appWidgetId, views);
 
     }

@@ -24,11 +24,12 @@
 
         <activity android:name=".Activities.StepActivity"
             android:launchMode="singleTask"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:parentActivityName=".Activities.IngredientsActivity" />
         <activity android:name=".Activities.IngredientsActivity"
             android:launchMode="singleTask"
             android:parentActivityName=".Activities.MainActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"/>
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"/>
         <activity android:name=".Activities.MainActivity"
             android:launchMode="singleTask"
             android:configChanges="orientation|screenSize|keyboardHidden">

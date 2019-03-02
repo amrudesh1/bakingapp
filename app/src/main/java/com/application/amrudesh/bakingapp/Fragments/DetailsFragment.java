@@ -271,6 +271,20 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
         if (tablet) {
             return;
         }
+        if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            empty.setVisibility(View.GONE);
+            imageView.setVisibility(View.GONE);
+            frameLayout2.setVisibility(View.GONE);
+            playerView.setVisibility(View.VISIBLE);
+            hideSystemInterface();
+
+        }
+        else
+        {
+            empty.setVisibility(View.VISIBLE);
+            frameLayout2.setVisibility(View.VISIBLE);
+            playerView.setVisibility(View.VISIBLE);
+        }
 
 
 
@@ -307,7 +321,7 @@ public class DetailsFragment extends Fragment implements View.OnClickListener {
     public void onPause() {
         super.onPause();
         releasePlayer();
-//        playerPosition =  exoPlayer.getCurrentPosition();
+     //   playerPosition =  exoPlayer.getCurrentPosition();
         Log.i("PLAYER","ONPAUSE METHOD CALLED");
 
     }
